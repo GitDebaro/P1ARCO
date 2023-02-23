@@ -6,7 +6,7 @@ using namespace std;
 void separador();
 
 class Persona{
-    public:
+    public:    
         string name;
         string surname;
         int id;
@@ -26,6 +26,37 @@ class Alumno : public Persona{
         float n3;
         float media;
         int nmarks=0;
+
+        float getN1(){
+            if(nmarks >=1){
+                return n1;
+            }
+            else{
+                return -1;
+            }
+        }
+
+        float getN2(){
+            if(nmarks >=2){
+                return n2;
+            }
+            else{
+                return -1;
+            }
+        }
+
+        float getN3(){
+            if(nmarks == 3){
+                return n3;
+            }
+            else{
+                return -1;
+            }
+        }
+
+        float getMedia(){
+            return media;
+        }
 
         void setMarks(float a){
             n1=a;
@@ -94,7 +125,7 @@ class Profesor : public Persona{
     }
 
     void setMark(int i, float a){
-        for(int j=0; j<lista.size(); j++){
+        for(int j=0; j<int(lista.size()); j++){
             if(lista[j].id == i){
                 lista[j].setMarks(a);
             }
@@ -102,7 +133,7 @@ class Profesor : public Persona{
     }
 
     void setMark(int i, float a, float b){
-        for(int j=0; j<lista.size(); j++){
+        for(int j=0; j<int(lista.size()); j++){
             if(lista[j].id == i){
                 lista[j].setMarks(a, b);
             }
@@ -110,7 +141,7 @@ class Profesor : public Persona{
     }
 
     void setMark(int i, float a, float b, float c){
-        for(int j=0; j<lista.size(); j++){
+        for(int j=0; j<int(lista.size()); j++){
             if(lista[j].id == i){
                 lista[j].setMarks(a, b, c);
             }
@@ -119,7 +150,7 @@ class Profesor : public Persona{
     }
 
     void setMedia(int i){
-        for(int j=0; j<lista.size(); j++){
+        for(int j=0; j<int(lista.size()); j++){
             if(lista[j].id == i){
                 lista[j].Media();
             }
@@ -129,7 +160,7 @@ class Profesor : public Persona{
     void toString(){
         cout<<endl<<"PROFESOR: "<<endl<<name<<" "<<surname<<" DNI: "<<id<<endl;
         separador();
-        for(int i=0; i<lista.size(); i++){
+        for(int i=0; i<int(lista.size()); i++){
             lista[i].toString();
             separador();
         }
@@ -140,7 +171,7 @@ class Profesor : public Persona{
     void printBestStu(){
         int pos = -1;
         float bm = 0.0;
-        for(int i=0; i<lista.size();i++){
+        for(int i=0; i<int(lista.size());i++){
             if(lista[i].nmarks == 3){
                 if(lista[i].media > bm){
                         pos = i;
@@ -190,7 +221,7 @@ void Calificando(){
        }
        else{
            bool found = false;
-           for(int i=0; i<datos.size(); i++){
+           for(int i=0; i<int(datos.size()); i++){
                if(n == datos[i].id){
                    datos[i].toString();
                    datos[i].printBestStu();
@@ -198,8 +229,8 @@ void Calificando(){
                }
            }
            if(!found){
-                for(int i=0; i<datos.size() && !found; i++){
-                    for(int j=0; j<datos[i].lista.size(); j++){
+                for(int i=0; i<int(datos.size()) && !found; i++){
+                    for(int j=0; j<int(datos[i].lista.size()); j++){
                         if(n == datos[i].lista[j].id){
                             cout<<endl;
                             separador();
