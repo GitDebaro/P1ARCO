@@ -1,207 +1,16 @@
 #include <iostream>
 #include <vector>
+#include "Alumno.h"
+#include "Profesor.h"
 
 using namespace std;
 
-void separador();
-
-class Persona{
-    public:    
-        string name;
-        string surname;
-        int id;
-
-        void setData(string n, string s, int i){
-            name = n;
-            surname = s;
-            id = i;
-        }
-
-};
-
-class Alumno : public Persona{
-    public:
-        float n1;
-        float n2;
-        float n3;
-        float media;
-        int nmarks=0;
-
-        float getN1(){
-            if(nmarks >=1){
-                return n1;
-            }
-            else{
-                return -1;
-            }
-        }
-
-        float getN2(){
-            if(nmarks >=2){
-                return n2;
-            }
-            else{
-                return -1;
-            }
-        }
-
-        float getN3(){
-            if(nmarks == 3){
-                return n3;
-            }
-            else{
-                return -1;
-            }
-        }
-
-        float getMedia(){
-            return media;
-        }
-
-        void setMarks(float a){
-            n1=a;
-            nmarks = 1;
-        }
-
-        void setMarks(float a, float b){
-            n1 = a;
-            n2 = b;
-            nmarks = 2;
-        }
-
-        void setMarks(float a, float b, float c){
-            n1 = a;
-            n2 = b;
-            n3 = c;
-            nmarks = 3;
-        }
-
-        void Media(){
-            if(nmarks > 0){
-                if(nmarks == 1){
-                    media = n1;
-                }
-                else if(nmarks == 2){
-                    media = (n1+n2)/2;
-                }
-                else{
-                    media = (n1+n2+n3)/3;
-                }
-
-            }
-        }
-
-        void toString(){
-            if(nmarks > 0){
-                if(nmarks == 1){
-                    cout<<name<<" "<<surname<<" DNI: "<<id<<endl;
-                    cout<<"Notas: "<<n1<<endl;
-                    cout<<"Nota media: "<<media<<endl;
-                }
-                else if(nmarks == 2){
-                    cout<<name<<" "<<surname<<" DNI: "<<id<<endl;
-                    cout<<"Notas: "<<n1<<"    "<<n2<<endl;
-                    cout<<"Nota media: "<<media<<endl;
-                }
-                else{
-                    cout<<name<<" "<<surname<<" DNI: "<<id<<endl;
-                    cout<<"Notas: "<<n1<<"    "<<n2<<"    "<<n3<<endl;
-                    cout<<"Nota media: "<<media<<endl;
-                }
-
-            }
-        }
-};
-
-class Profesor : public Persona{
-    public:
-
-    vector<Alumno> lista;
-
-    void addStudent(string n, string s, int i){
-        Alumno tmp;
-        tmp.setData(n,s,i);
-        lista.push_back(tmp);
-    }
-
-    void setMark(int i, float a){
-        for(int j=0; j<int(lista.size()); j++){
-            if(lista[j].id == i){
-                lista[j].setMarks(a);
-            }
-        }
-    }
-
-    void setMark(int i, float a, float b){
-        for(int j=0; j<int(lista.size()); j++){
-            if(lista[j].id == i){
-                lista[j].setMarks(a, b);
-            }
-        }
-    }
-
-    void setMark(int i, float a, float b, float c){
-        for(int j=0; j<int(lista.size()); j++){
-            if(lista[j].id == i){
-                lista[j].setMarks(a, b, c);
-            }
-        }
-
-    }
-
-    void setMedia(int i){
-        for(int j=0; j<int(lista.size()); j++){
-            if(lista[j].id == i){
-                lista[j].Media();
-            }
-        }
-    }
-
-    void toString(){
-        cout<<endl<<"PROFESOR: "<<endl<<name<<" "<<surname<<" DNI: "<<id<<endl;
-        separador();
-        for(int i=0; i<int(lista.size()); i++){
-            lista[i].toString();
-            separador();
-        }
-
-    }
-
-
-    void printBestStu(){
-        int pos = -1;
-        float bm = 0.0;
-        for(int i=0; i<int(lista.size());i++){
-            if(lista[i].nmarks == 3){
-                if(lista[i].media > bm){
-                        pos = i;
-                        bm = lista[i].media;
-                }
-            }
-        }
-
-        if(pos == -1){
-            cout<<endl;
-            separador();
-            cout<<"No hay ningun alumno con 3 notas"<<endl;
-            separador();
-        }
-        else{
-            cout<<endl;
-            separador();
-            cout<<"Mejor alumno: "<<endl;
-            cout<<lista[pos].name<<" "<<lista[pos].surname<<" DNI: "<<lista[pos].id<<endl;
-            cout<<"Notas: "<<lista[pos].n1<<"    "<<lista[pos].n2<<"    "<<lista[pos].n3<<endl;
-            cout<<"Nota media: "<<lista[pos].media<<endl;
-            separador();
-        }
-    }
-};
-
 void Calificando();
 void dataInit(vector<Profesor> &l);
+void separador();
 
-int main(){
+int main()
+{
     Calificando();
     return 0;
 }
@@ -222,7 +31,7 @@ void Calificando(){
        else{
            bool found = false;
            for(int i=0; i<int(datos.size()); i++){
-               if(n == datos[i].id){
+               if(n == datos[i].getID()){
                    datos[i].toString();
                    datos[i].printBestStu();
                    found = true;
@@ -231,7 +40,7 @@ void Calificando(){
            if(!found){
                 for(int i=0; i<int(datos.size()) && !found; i++){
                     for(int j=0; j<int(datos[i].lista.size()); j++){
-                        if(n == datos[i].lista[j].id){
+                        if(n == datos[i].lista[j].getID()){
                             cout<<endl;
                             separador();
                             datos[i].lista[j].toString();
@@ -249,8 +58,7 @@ void Calificando(){
 }
 
 void dataInit(vector<Profesor> &l){
-    Profesor p1;
-    p1.setData("David", "Martinez Martinez", 1234567);
+    Profesor p1("David", "Martinez Martinez", 1234567);
     p1.addStudent("David", "Fernandez Fernandez", 2345678);
     p1.setMark(2345678, 7.5, 7, 8.9);
     p1.setMedia(2345678);
@@ -266,8 +74,7 @@ void dataInit(vector<Profesor> &l){
     p1.addStudent("Esther", "Diaz Fernandez", 2345690);
     p1.setMark(2345690, 2, 6, 4);
     p1.setMedia(2345690);
-    Profesor p2;
-    p2.setData("Ramon", "Fernandez Diaz", 1234568);
+    Profesor p2("Ramon", "Fernandez Diaz", 1234568);
     p2.addStudent("Laura", "Gomez Garcia", 2345578);
     p2.setMark(2345578, 8.5);
     p2.setMedia(2345578);
@@ -283,8 +90,7 @@ void dataInit(vector<Profesor> &l){
     p2.addStudent("Kevin", "Sanchez Diaz", 2345590);
     p2.setMark(2345590, 6, 4);
     p2.setMedia(2345590);
-    Profesor p3;
-    p3.setData("Lidia", "Nuñez Sanchez", 1934567);
+    Profesor p3("Lidia", "Nuñez Sanchez", 1934567);
     p3.addStudent("Diego", "Martinez Carrera", 2945678);
     p3.setMark(2945678, 2, 2.2, 2);
     p3.setMedia(2945678);
